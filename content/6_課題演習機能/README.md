@@ -28,3 +28,87 @@
 Switchも同様に設定を施し、適時採点情報を確認することが可能であり、最終的にすべての設定が完了した後、Auto Scoringボタンを押下することで、動画の0:02:03のように画面にコンプリートと表示され演習が完了となる。
 
 上記のような流れで学習者は演習を実施可能となる。
+
+
+
+参考として、動画で利用した課題演習に利用するファイルを下記に示しておく。
+```xml:VLANの演習ファイル
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vns edition="web" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="">
+	<line ifdst="Host0" ifdst_port="eth0" ifsrc="Switch0" ifsrc_port="eth0"></line>
+	<line ifdst="Host1" ifdst_port="eth0" ifsrc="Switch1" ifsrc_port="eth0"></line>
+	<line ifdst="Switch1" ifdst_port="eth1" ifsrc="Switch0" ifsrc_port="eth1"></line>
+	<vm name="Host0" position_x="221" position_y="274">
+		<host name="Host0">
+			<if mac="56:4e:53:a6:b5:5e" name="eth0" status="------">
+				<ip address="192.168.1.1" netmask="255.255.255.0"></ip>
+			</if>
+		</host>
+	</vm>
+	<vm name="Host1" position_x="358" position_y="291">
+		<host name="Host1">
+			<if mac="56:4e:53:b2:91:92" name="eth0" status="------">
+				<ip address="192.168.1.2" netmask="255.255.255.0"></ip>
+			</if>
+		</host>
+	</vm>
+	<vm name="Switch0" position_x="191" position_y="122">
+		<switch name="Switch0">
+			<hostname>Switch0</hostname>
+			<if mac="56:4e:53:e:44:72" name="eth0" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Access_Port</switchport>
+				<vlan vlan_id="10"></vlan>
+			</if>
+			<if mac="56:4e:53:c6:e9:3e" name="eth1" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Trunk_Port</switchport>
+				<vlan allowed_vlan="1,10,20" vlan_id="0"></vlan>
+			</if>
+		</switch>
+	</vm>
+	<vm name="Switch1" position_x="346" position_y="130">
+		<switch name="Switch1">
+			<hostname>Switch1</hostname>
+			<if mac="56:4e:53:35:dd:a5" name="eth0" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Access_Port</switchport>
+				<vlan vlan_id="20"></vlan>
+			</if>
+			<if mac="56:4e:53:53:76:e9" name="eth1" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Trunk_Port</switchport>
+				<vlan allowed_vlan="1,10,20" vlan_id="0"></vlan>
+			</if>
+		</switch>
+	</vm>
+	<explain>S2H2 VLAN演習</explain>
+	<content> 別のVLAN上に存在するHost0とHost1同士の疎通について学習しよう. 
+	VLANの設定をした後にトランクリンクの設定をしよう.
+	--アドレステーブル--
+	Host0   eth0 192.168.1.1/24
+	Host1   eth0 192.168.1.2/24
+	Switch0 eth0 --------------
+	        eth1 --------------
+	Switch1 eth0 --------------
+	        eth1 --------------
+
+	--STEP1--
+	アドレステーブルに則って各ネットワーク機器にIPアドレスを設定しよう.
+	--STEP2--
+	Hostとの接続を実施しているSwitchの各ポートにVLANを設定しよう.
+	--STEP3--
+	Switch同士を接続している各ポートにトランクリンクを設定しよう.
+	・許可するVLAN: 1,10,20
+	--STEP4--
+	・Host0からHost1への疎通をpingコマンドで確認しよう.
+	・Host1からHost0への疎通をpingコマンドで確認しよう. </content>
+	<number>5</number>
+	<check_action>
+	<action nodename="Host0" command="ping 192.168.1.2"/>
+	<action nodename="Host1" command="ping 192.168.1.1"/>
+</check_action>
+</vns>
+
+```
