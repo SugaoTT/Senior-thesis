@@ -30,3 +30,60 @@
 ![image](https://user-images.githubusercontent.com/98573303/169845634-b0f84eba-5cc7-4a49-bfad-5c7e712e624c.png)
 
 以上のような流れでデータの保存・読み込みが行われる。
+
+参考として動画で保存したネットワークのファイル(XMLファイル)を下記に示す。
+
+```xml:VLAN
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vns edition="web" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="">
+	<line ifdst="Host0" ifdst_port="eth0" ifsrc="Switch0" ifsrc_port="eth0"></line>
+	<line ifdst="Host1" ifdst_port="eth0" ifsrc="Switch1" ifsrc_port="eth0"></line>
+	<line ifdst="Switch1" ifdst_port="eth1" ifsrc="Switch0" ifsrc_port="eth1"></line>
+	<vm name="Host0" position_x="184" position_y="270">
+		<host name="Host0">
+			<if mac="56:4e:53:89:26:38" name="eth0" status="------">
+				<ip address="192.168.1.1" netmask="255.255.255.0"></ip>
+			</if>
+		</host>
+	</vm>
+	<vm name="Host1" position_x="380" position_y="283">
+		<host name="Host1">
+			<if mac="56:4e:53:15:c7:e5" name="eth0" status="------">
+				<ip address="192.168.1.2" netmask="255.255.255.0"></ip>
+			</if>
+		</host>
+	</vm>
+	<vm name="Switch0" position_x="167" position_y="120">
+		<switch name="Switch0">
+			<hostname>Switch0</hostname>
+			<if mac="56:4e:53:ba:bf:c6" name="eth0" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Access_Port</switchport>
+				<vlan vlan_id="10"></vlan>
+			</if>
+			<if mac="56:4e:53:14:45:da" name="eth1" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Trunk_Port</switchport>
+				<vlan allowed_vlan="1,10,20" vlan_id="0"></vlan>
+			</if>
+		</switch>
+	</vm>
+	<vm name="Switch1" position_x="370" position_y="141">
+		<switch name="Switch1">
+			<hostname>Switch1</hostname>
+			<if mac="56:4e:53:78:50:a6" name="eth0" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Access_Port</switchport>
+				<vlan vlan_id="20"></vlan>
+			</if>
+			<if mac="56:4e:53:53:3e:20" name="eth1" status="------">
+				<ip address=" " netmask=" "></ip>
+				<switchport>Trunk_Port</switchport>
+				<vlan allowed_vlan="1,10,20" vlan_id="0"></vlan>
+			</if>
+		</switch>
+	</vm>
+</vns>
+
+```
